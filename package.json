@@ -1,0 +1,42 @@
+{
+  "name": "dependency-tree",
+  "version": "1.0.0",
+  "description": "This package shows a tree of all the dependencies of a certain package",
+  "main": "index.js",
+  "scripts": {
+    "start": "node dist/app.js",
+    "dev": "nodemon src/app.ts",
+    "build": "tsc -p .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/itaytester/snyk_assignment.git"
+  },
+  "author": "Itay Cohen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/itaytester/snyk_assignment/issues"
+  },
+  "homepage": "https://github.com/itaytester/snyk_assignment#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "node-fetch": "^2.6.1",
+    "redis": "^3.1.2",
+    "semver": "^7.3.5"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.13",
+    "@types/jest": "^26.0.24",
+    "@types/node": "^16.4.13",
+    "@types/node-fetch": "^2.5.12",
+    "@types/redis": "^2.8.31",
+    "@types/semver": "^7.3.8",
+    "jest": "^27.0.6",
+    "nodemon": "^2.0.12",
+    "ts-jest": "^27.0.4",
+    "ts-node": "^10.1.0",
+    "tsconfig-paths": "^3.10.1",
+    "typescript": "^4.3.5"
+  }
+}
