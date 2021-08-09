@@ -19,14 +19,11 @@ export interface Version {
   description: string;
   version: string;
   dependencies: Dependencies;
+  devDependencies: Dependencies;
 }
 
 export interface Dependencies {
-    [key: string]: Dependency;
-}
-  
-export interface Dependency {
-  version: string;
+    [key: string]: string;
 }
 
 export interface RouteObject {
