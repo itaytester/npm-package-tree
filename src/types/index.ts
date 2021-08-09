@@ -6,7 +6,8 @@ export interface Package {
 
 export interface PackageData {
     name: string,
-    versions: Version[]
+    versions: Version[],
+    error: boolean
 }
 
 export interface Version {
@@ -14,4 +15,10 @@ export interface Version {
     description: string,
     version: string, 
     dependencies: string[]
+}
+
+export interface RouteObject {
+    name: string,
+    version: string,
+    father: string
 }
