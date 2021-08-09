@@ -1,6 +1,6 @@
 import fetch, { Response } from "node-fetch";
 import semver from "semver";
-import { Package, PackageData, RouteObject } from "../types";
+import { Dependencies, Package, PackageData, RouteObject } from "../types";
 import redis from "redis";
 import { promisify } from "util";
 
@@ -34,6 +34,7 @@ export const getPackage = async (
           ...json.versions[cleanVersion].dependencies,
         }
       : {};
+
     //checks if dependency list is empty, thus making the dependency a leaf in the tree
     if (Object.keys(dependencies).length !== 0) {
       let root: Package = { packageName, version, dependencies: [] };
@@ -63,20 +64,33 @@ export const getPackage = async (
   }
 };
 
-const getPackageJson = async (packageName: string, version: string) => {
+export const getPackageJson = async (
+  packageName: string,
+  version: string
+): Promise<Dependencies> => {
   const redisJson = await getAsync(packageName);
-  let json: PackageData = { name: packageName, versions: [], error: false };
+
+  let json: PackageData = {};
   if (!redisJson) {
-    try{
-      const npmPackage = await fetch(`https://registry.npmjs.org/${packageName}`);
-      json = await npmPackage.json();
-      client.set(packageName, JSON.stringify(json));
-    } catch (e){
-      json.error = true
-      return json;
-    }
+    const npmPackage = await fetch(`https://registry.npmjs.org/${packageName}`);
+    json = await npmPackage.json();
+    if (json.error || !json.versions) return {};
+    client.set(packageName, JSON.stringify(json));
   } else {
     json = JSON.parse(redisJson);
   }
-  return json;
+  const cleanVersion = semver.maxSatisfying(
+    Object.keys(json.versions ? json.versions : {}),
+    version !== "latest" ? version : "*"
+  );
+  const { versions } = json;
+  const dependencies: Dependencies =
+    cleanVersion && versions
+      ? {
+          ...versions[cleanVersion]?.dependencies,
+        }
+      : {};
+  return dependencies;
 };
+
+const createVersionArray = (versions: any) => {};
